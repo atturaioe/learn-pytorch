@@ -59,8 +59,9 @@ class RunBuilder():
 
 
 class RunManager():
-    def __init__(self, file_name):
+    def __init__(self, file_name, device):
         self.file_name = file_name
+        self.device = device
 
         self.epoch_count = 0
 
@@ -83,6 +84,7 @@ class RunManager():
         self.tb = SummaryWriter(comment=f'-{run}')
 
         images, labels = next(iter(self.loader))
+        images, labels = images.to(self.device), labels.to(self.device)
         grid = torchvision.utils.make_grid(images)
 
         self.tb.add_image('images', grid)
